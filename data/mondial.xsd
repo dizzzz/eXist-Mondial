@@ -409,6 +409,7 @@
         <xs:group ref="coordinates"/>
         <xs:element ref="elevation" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="depth" minOccurs="0" maxOccurs="1"/>
+        
       </xs:sequence>
       <xs:attributeGroup ref="id-and-countries"/>
       <xs:attribute name="island" type="xs:IDREF"/>

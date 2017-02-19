@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mondial
-  SYSTEM "mondial.dtd">
-<mondial>
+<mondial xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="mondial.xsd">
    <country car_code="AL"
             area="28750"
             capital="cty-Albania-Tirane"
@@ -32736,7 +32735,7 @@
             <population year="2010" measured="census">805235</population>
             <population year="2013" measured="estimate">837442</population>
             <located_at watertype="sea" sea="sea-Pacific"/>
-            <located_at watertype="sea" river="SanFranciscoBay"/>
+            <located_at watertype="sea" river="sea-SanFranciscoBay"/>
          </city>
          <city id="cty-United-States-37"
                country="USA"
@@ -32789,7 +32788,7 @@
             <population year="1990" measured="census">372242</population>
             <population measured="census" year="2000">399334</population>
             <population measured="census" year="2010">390865</population>
-            <located_at watertype="sea" river="SanFranciscoBay"/>
+            <located_at watertype="sea" river="sea-SanFranciscoBay"/>
          </city>
          <city id="cty-United-States-56"
                country="USA"
@@ -32876,7 +32875,7 @@
             <population year="1990" measured="census">173339</population>
             <population measured="census" year="2000">203461</population>
             <population measured="census" year="2010">214079</population>
-            <located_at watertype="sea" river="SanFranciscoBay"/>
+            <located_at watertype="sea" river="sea-SanFranciscoBay"/>
          </city>
          <city id="cty-United-States-98"
                country="USA"
@@ -33081,7 +33080,7 @@
             <population measured="census" year="1990">114498</population>
             <population measured="census" year="2000">140107</population>
             <population measured="census" year="2010">144342</population>
-            <located_at watertype="sea" river="SanFranciscoBay"/>
+            <located_at watertype="sea" river="sea-SanFranciscoBay"/>
          </city>
          <city id="cty-United-States-164"
                country="USA"
@@ -33214,7 +33213,7 @@
             <population year="1990" measured="census">109199</population>
             <population measured="census" year="2000">116661</population>
             <population measured="census" year="2010">115940</population>
-            <located_at watertype="sea" river="SanFranciscoBay"/>
+            <located_at watertype="sea" river="sea-SanFranciscoBay"/>
          </city>
          <city id="cty-United-States-196"
                country="USA"
@@ -33322,7 +33321,7 @@
             <population measured="census" year="1990">87425</population>
             <population measured="census" year="2000">99250</population>
             <population measured="census" year="2010">103670</population>
-            <located_at watertype="sea" river="SanFranciscoBay"/>
+            <located_at watertype="sea" river="sea-SanFranciscoBay"/>
          </city>
       </province>
       <province id="prov-United-States-7"
@@ -53690,7 +53689,7 @@
    </sea>
    <sea id="sea-GulfOfCalifornia" country="MEX" bordering="sea-Pacific">
       <name>Gulf of California</name>
-      <located country="MEX" province="prov-Mexico-3 prov-Mexico-61 prov-Mexico-25 prov-Mexico-26"/>
+      <located country="MEX" province="prov-Mexico-3 prov-Mexico-16 prov-Mexico-25 prov-Mexico-26"/>
    </sea>
    <sea id="sea-OchotskSea"
         country="R J"
@@ -59463,8 +59462,8 @@
    </river>
    <river id="river-Feather_River" country="USA">
       <name>Feather River</name>
-      <through lake="lake-Oroville"/>
       <located country="USA" province="prov-United-States-6"/>
+      <through lake="lake-Oroville"/>
       <to watertype="river" water="river-Sacramento_River"/>
       <area>16000</area>
       <length>350</length>
@@ -59555,32 +59554,15 @@
          <elevation>-85</elevation>
       </estuary>
    </river>
-   <river country="USA" id="river-AmargosaRiver">
-      <name>Amargosa River</name>
-      <located country="USA" province="prov-United-States-29 prov-United-States-6"/>
-      <area>14245</area>
-      <length>185</length>
-      <source country="USA">
-         <located country="USA" province="prov-United-States-29"/>
-         <latitude>37.07</latitude>
-         <longitude>-116.69</longitude>
-         <elevation>368</elevation>
-      </source>
-      <estuary country="USA">
-         <located country="USA" province="prov-United-States-6"/>
-         <latitude>36.24</latitude>
-         <longitude>-116.86</longitude>
-         <elevation>-85</elevation>
-      </estuary>
-   </river>
    <river id="river-Colorado_River" country="MEX USA">
       <name>Colorado</name>
       <located country="MEX" province="prov-Mexico-3 prov-Mexico-26"/>
       <located country="USA"
                province="prov-United-States-4 prov-United-States-6 prov-United-States-7 prov-United-States-29 prov-United-States-45"/>
-      <to watertype="sea" water="sea-GulfOfCalifornia"/>
+      
       <through lake="lake-Lake_Powell"/>
       <through lake="lake-Lake_Mead"/>
+      <to watertype="sea" water="sea-GulfOfCalifornia"/>
       <area>629100</area>
       <length>2330</length>
       <source country="USA">
@@ -63520,7 +63502,7 @@
       <longitude>-121.47</longitude>
       <elevation>275</elevation>
       <depth>274</depth>
-      <heigth>235</heigth>
+      <!--<heigth>235</heigth>-->
    </lake>
    <lake id="lake-Lake_Powell" country="USA" type="dam">
       <name>Lake Powell</name>
@@ -63531,7 +63513,7 @@
       <longitude>-111.5</longitude>
       <elevation>1127</elevation>
       <depth>171</depth>
-      <heigth>216</heigth>
+      <!--<heigth>216</heigth>-->
    </lake>
    <lake id="lake-Lake_Mead" country="USA" type="dam">
       <name>Lake Mead</name>
@@ -63542,7 +63524,7 @@
       <longitude>-114.75</longitude>
       <elevation>372</elevation>
       <depth>180</depth>
-      <heigth>221</heigth>
+      <!--<heigth>221</heigth>-->
    </lake>
    <lake id="lake-FortPeckLake" country="USA" type="dam">
       <name>Fort Peck Lake</name>
