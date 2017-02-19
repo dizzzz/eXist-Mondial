@@ -2,8 +2,6 @@
 <meta xmlns="http://exist-db.org/xquery/repo">
     <description>A showcase of the Mondial database </description>
     <author>Dannes Wessels</author>
-    <author>Dannes Wessels</author>
-    <author>Dannes Wessels</author>
     <website>https://github.com/dizzzz/eXist-Mondial</website>
     <status>alpha</status>
     <license>GNU-LGPL</license>
@@ -12,5 +10,4 @@
     <target>mondial</target>
     <prepare>pre-install.xql</prepare>
     <finish/>
-<deployed>2017-02-19T20:54:16.458+01:00</deployed>
 </meta>
