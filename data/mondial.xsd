@@ -13,6 +13,7 @@
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="mountain"/>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="desert"/>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="airport"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="langtree"/>
       </xs:sequence>
     </xs:complexType>
 
@@ -51,7 +52,7 @@
       <xs:field xpath="@id"/>
     </xs:key>
     <xs:keyref name="capitaltocity" refer="citykey">
-      <xs:selector xpath=".//country|.//province"/>
+      <xs:selector xpath=".//country | .//province"/>
       <xs:field xpath="@capital"/>
     </xs:keyref>
     <xs:keyref name="headqtocity" refer="citykey">
@@ -69,7 +70,7 @@
     </xs:keyref>
 
     <xs:key name="waterkey">
-      <xs:selector xpath=".//sea|.//river|.//lake"/>
+      <xs:selector xpath=".//sea | .//river | .//lake"/>
       <xs:field xpath="@id"/>
     </xs:key>
     <xs:keyref name="totowater" refer="waterkey">
@@ -118,7 +119,7 @@
   <xs:complexType name="percentage-property">
     <xs:simpleContent>
       <xs:extension base="xs:string">
-        <xs:attribute ref="percentage" use="required"/>
+        <xs:attribute ref="percentage"/>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
@@ -138,18 +139,24 @@
   </xs:simpleType>
   <xs:element name="latitude" type="latitude"/>
   <xs:element name="longitude" type="longitude"/>
+  <!-- usage for an xs:group: if coordinates, then both lat and long -->
+  <xs:group name="maybecoordinates">
+    <xs:sequence>
+      <xs:group ref="coordinates" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
   <xs:group name="coordinates">
-   <xs:sequence>
-    <xs:element ref="latitude" minOccurs="0" maxOccurs="1"/>
-    <xs:element ref="longitude" minOccurs="0" maxOccurs="1"/>
-   </xs:sequence>
+    <xs:sequence>
+      <xs:element ref="latitude" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="longitude" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
   </xs:group>
 
   <xs:attributeGroup name="id-and-countries">
     <xs:attribute ref="id" use="required"/>
     <xs:attribute name="country" type="xs:IDREFS" use="required"/>
   </xs:attributeGroup>
-  
+
   <xs:element name="country">
     <xs:complexType>
       <xs:sequence>
@@ -187,14 +194,14 @@
   </xs:element>
 
   <xs:element name="population">
-   <xs:complexType>
-    <xs:simpleContent>
-     <xs:extension base="xs:nonNegativeInteger">
-      <xs:attribute name="year" type="year" use="required"/>
-      <xs:attribute name="measured" type="xs:string"/>
-     </xs:extension>
-    </xs:simpleContent>
-   </xs:complexType>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:nonNegativeInteger">
+          <xs:attribute name="year" type="year" use="required"/>
+          <xs:attribute name="measured" type="xs:string"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
   </xs:element>
 
   <xs:element name="population_growth" type="xs:decimal"/>
@@ -207,14 +214,14 @@
   <xs:element name="unemployment" type="positiveDecimal"/>
 
   <xs:element name="indep_date">
-   <xs:complexType>
-    <xs:simpleContent>
-     <xs:extension base="xs:date">
-      <xs:attribute name="from" type="xs:string"/>
-      <!-- usually idref to a country, but not always (e.g. "Ottoman Empire") -->
-     </xs:extension>
-    </xs:simpleContent>
-   </xs:complexType>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:date">
+          <xs:attribute name="from" type="xs:string"/>
+          <!-- usually idref to a country, but not always (e.g. "Ottoman Empire") -->
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
   </xs:element>
 
   <xs:element name="dependent">
@@ -224,7 +231,7 @@
   </xs:element>
 
   <xs:element name="government" type="xs:string"/>
-  
+
   <xs:element name="encompassed">
     <xs:complexType>
       <xs:attribute name="continent" type="xs:IDREF" use="required"/>
@@ -235,6 +242,42 @@
   <xs:element name="ethnicgroup" type="percentage-property"/>
   <xs:element name="religion" type="percentage-property"/>
   <xs:element name="language" type="percentage-property"/>
+
+  <xs:element name="langtree">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" minOccurs="1" maxOccurs="unbounded">
+          <!-- local type: with a @country attribute -->
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="country" type="xs:IDREFS"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="spokenby" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="langtree" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="country" type="xs:IDREFS"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="spokenby">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="country" type="xs:IDREFS"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 
   <xs:element name="border">
     <xs:complexType>
@@ -264,7 +307,7 @@
       <xs:sequence>
         <xs:element ref="name" minOccurs="1" maxOccurs="unbounded"/>
         <xs:element ref="localname" minOccurs="0" maxOccurs="1"/>
-        <xs:group ref="coordinates"/>
+        <xs:group ref="maybecoordinates"/>
         <xs:element ref="elevation" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="population" minOccurs="0" maxOccurs="unbounded"/>
         <xs:element ref="located_at" minOccurs="0" maxOccurs="unbounded"/>
@@ -303,7 +346,7 @@
       </xs:sequence>
       <xs:attribute ref="id" use="required"/>
       <xs:attribute name="headq" type="xs:IDREF"/>
-     </xs:complexType>
+    </xs:complexType>
   </xs:element>
 
   <xs:element name="abbrev" type="xs:string"/>
@@ -327,33 +370,34 @@
   </xs:element>
 
   <xs:element name="depth" type="positiveDecimal"/>
-  <xs:element name="height" type="positiveDecimal"/> <!-- dams of lakes -->
+  <xs:element name="height" type="positiveDecimal"/>
+  <!-- dams of lakes -->
   <xs:element name="length" type="positiveDecimal"/>
   <xs:element name="mountains" type="xs:string"/>
-  
+
   <xs:element name="source">
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="mountains" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="located" minOccurs="0" maxOccurs="unbounded"/>
-        <xs:element ref="from" minOccurs="0" maxOccurs="unbounded"/>
-        <xs:group ref="coordinates"/>
+        <xs:element ref="from" minOccurs="0" maxOccurs="1"/>
+        <xs:group ref="maybecoordinates"/>
         <xs:element ref="elevation" minOccurs="0" maxOccurs="1"/>
       </xs:sequence>
       <xs:attribute name="country" type="xs:IDREFS"/>
     </xs:complexType>
-  </xs:element>    
+  </xs:element>
 
   <xs:element name="estuary">
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="located" minOccurs="0" maxOccurs="unbounded"/>
-        <xs:group ref="coordinates"/>
+        <xs:group ref="maybecoordinates"/>
         <xs:element ref="elevation" minOccurs="0" maxOccurs="1"/>
       </xs:sequence>
       <xs:attribute name="country" type="xs:IDREFS"/>
     </xs:complexType>
-  </xs:element>    
+  </xs:element>
 
   <xs:element name="from">
     <xs:complexType>
@@ -406,7 +450,7 @@
         <xs:element ref="located" minOccurs="0" maxOccurs="unbounded"/>
         <xs:element ref="to" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="area" minOccurs="0" maxOccurs="1"/>
-        <xs:group ref="coordinates"/>
+        <xs:group ref="maybecoordinates"/>
         <xs:element ref="elevation" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="depth" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="height" minOccurs="0" maxOccurs="1"/>
@@ -442,7 +486,7 @@
       </xs:sequence>
       <xs:attributeGroup ref="id-and-countries"/>
       <xs:attribute name="bordering" type="xs:IDREFS"/>
-     </xs:complexType>
+    </xs:complexType>
   </xs:element>
 
   <xs:element name="desert">
@@ -451,7 +495,7 @@
         <xs:element ref="name" maxOccurs="unbounded"/>
         <xs:element ref="located" minOccurs="0" maxOccurs="unbounded"/>
         <xs:element ref="area" minOccurs="0" maxOccurs="1"/>
-        <xs:group ref="coordinates"/>
+        <xs:group ref="maybecoordinates"/>
       </xs:sequence>
       <xs:attributeGroup ref="id-and-countries"/>
       <xs:attribute name="climate" type="xs:string" fixed="dry aride"/>
@@ -468,7 +512,7 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  
+
   <xs:element name="islands" type="xs:string"/>
 
   <xs:element name="island">
@@ -478,7 +522,7 @@
         <xs:element ref="islands" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="located" minOccurs="0" maxOccurs="unbounded"/>
         <xs:element ref="area" minOccurs="0" maxOccurs="1"/>
-        <xs:group ref="coordinates"/>
+        <xs:group ref="maybecoordinates"/>
         <xs:element ref="elevation" minOccurs="0" maxOccurs="1"/>
       </xs:sequence>
       <xs:attributeGroup ref="id-and-countries"/>
@@ -491,7 +535,9 @@
             <xs:enumeration value="volcanic"/>
             <xs:enumeration value="coral"/>
             <xs:enumeration value="atoll"/>
+            <xs:enumeration value="raisedatoll"/>
             <xs:enumeration value="lime"/>
+            <xs:enumeration value="sand"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
@@ -504,7 +550,7 @@
         <xs:element ref="name" minOccurs="1" maxOccurs="unbounded"/>
         <xs:element ref="mountains" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="located" minOccurs="0" maxOccurs="unbounded"/>
-        <xs:group ref="coordinates"/>
+        <xs:group ref="maybecoordinates"/>
         <xs:element ref="elevation" minOccurs="0" maxOccurs="1"/>
       </xs:sequence>
       <xs:attributeGroup ref="id-and-countries"/>

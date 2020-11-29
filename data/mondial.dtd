@@ -6,24 +6,23 @@
   - multivalued reference attributes (organization/member/country)
   - cross-references in both directions (organization/member/country,
     country/memberships)
-  - a "boolean"/flag attribute: city/is_country_cap
   - reference attributes with more than one target class
     (river/to, references rivers, lakes, and seas) -->
 
-
 <!ELEMENT mondial (country*,continent*,organization*,
-                   sea*,river*,lake*,island*,mountain*,desert*,airport*)> 
+                   sea*,river*,lake*,island*,mountain*,desert*,airport*,langtree*)> 
 <!ELEMENT country (name+,localname?,population+,
                    population_growth?,infant_mortality?,
                    gdp_total?,gdp_agri?,gdp_ind?,gdp_serv?,inflation?,unemployment?,
-                   (indep_date|dependent)?,government?,encompassed*,
+                   (indep_date|dependent)?,government?,encompassed+,
                    ethnicgroup*,religion*,language*,border*,
                    (province+|city+))>
-<!ATTLIST country car_code ID #IMPLIED
-                  area CDATA #IMPLIED
+<!ATTLIST country car_code ID #REQUIRED
+                  area CDATA #REQUIRED
                   capital IDREF #IMPLIED
                   memberships IDREFS #IMPLIED>
 <!ELEMENT name (#PCDATA)>
+  <!ATTLIST name country CDATA #IMPLIED>
 <!ELEMENT localname (#PCDATA)>
 <!ELEMENT area (#PCDATA)>
 <!ELEMENT population (#PCDATA)>
@@ -49,11 +48,11 @@
 <!ATTLIST encompassed continent IDREF #REQUIRED
                       percentage CDATA #REQUIRED>
 <!ELEMENT ethnicgroup (#PCDATA)>
-<!ATTLIST ethnicgroup percentage CDATA #REQUIRED>
+<!ATTLIST ethnicgroup percentage CDATA #IMPLIED>
 <!ELEMENT religion (#PCDATA)>
-<!ATTLIST religion percentage CDATA #REQUIRED>
+<!ATTLIST religion percentage CDATA #IMPLIED>
 <!ELEMENT language (#PCDATA)>
-<!ATTLIST language percentage CDATA #REQUIRED>
+<!ATTLIST language percentage CDATA #IMPLIED>
 <!ELEMENT border EMPTY>
 <!ATTLIST border country IDREF #REQUIRED
                  length CDATA #REQUIRED>
@@ -66,13 +65,12 @@
 <!ELEMENT city (name+,localname?,latitude?,longitude?,elevation?,population*,
                 located_at*,located_on*)>
 <!ATTLIST city id ID #REQUIRED
-               is_country_cap CDATA #IMPLIED
-               is_state_cap CDATA #IMPLIED
                country IDREF #REQUIRED
                province IDREF #IMPLIED>
-<!ELEMENT elevation (#PCDATA)>
 <!ELEMENT longitude (#PCDATA)>
 <!ELEMENT latitude (#PCDATA)>
+<!ELEMENT elevation (#PCDATA)>
+<!ELEMENT height (#PCDATA)>  <!-- height of a dam -->
 <!ELEMENT located_at EMPTY>
 <!ATTLIST located_at watertype (river|sea|lake) #REQUIRED
                      river IDREFS #IMPLIED
@@ -88,7 +86,7 @@
 <!ELEMENT established (#PCDATA)>
 <!ELEMENT members EMPTY>
 <!ATTLIST members type CDATA #REQUIRED
-                 country IDREFS #REQUIRED>
+                  country IDREFS #REQUIRED>
 
 <!ELEMENT continent (name,area)>
 <!ATTLIST continent id ID #REQUIRED>
@@ -98,7 +96,7 @@
                area?,length?,latitude?,longitude?,elevation?,depth?,height?,
                source?,estuary?)>
 <!ATTLIST geo id ID #REQUIRED
-              country IDREFS #IMPLIED
+              country IDREFS #REQUIRED
               type NMTOKEN #IMPLIED
               sea IDREFS #IMPLIED
               lake IDREFS #IMPLIED
@@ -157,7 +155,7 @@
                  lake IDREF #IMPLIED
                  river IDREFS #IMPLIED
                  country IDREFS #REQUIRED
-                 type (volcanic|coral|atoll|lime) #IMPLIED>
+                 type (volcanic|coral|atoll|raisedatoll|lime|sand) #IMPLIED>
 <!ELEMENT islands (#PCDATA)>
 
 <!ELEMENT mountain (name+,mountains?,located*,latitude?,longitude?,elevation?)>
@@ -173,4 +171,7 @@
                    city IDREF #IMPLIED
                    country IDREF #REQUIRED>
 <!ELEMENT gmtOffset (#PCDATA)>
+<!ELEMENT langtree (name+,spokenby*,langtree*)>
+<!ATTLIST langtree country IDREFS #IMPLIED>
+<!ELEMENT spokenby (name*)>
 
